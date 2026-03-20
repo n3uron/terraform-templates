@@ -1,0 +1,143 @@
+# ── General ───────────────────────────────────────────────────────────────────
+
+# AWS region where resources will be deployed.
+aws_region = "us-east-1"
+
+# AWS authentication — choose ONE of the two methods below:
+#
+#   Named profile  – uses a profile from ~/.aws/credentials or ~/.aws/config.
+#
+#   Access keys    – pass an IAM access key ID and secret key directly.
+#
+# If both are set, access keys take precedence and the profile is ignored.
+
+# AWS CLI named profile (set to "default" or your profile name).
+aws_profile = "default"
+
+# IAM access keys.
+# aws_access_key = "AKIAIOSFODNN7EXAMPLE"
+# aws_secret_key = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
+
+# Prefix used for naming all created resources (lowercase, digits, hyphens, max 24 chars).
+name_prefix = "n3uron-tf"
+
+# ── Networking ────────────────────────────────────────────────────────────────
+# By default, a new VPC with two public subnets (one per AZ) is created.
+# Set existing_vpc_id and both subnet IDs to deploy into a pre-existing VPC
+# instead (vpc_cidr is then ignored). The two subnets must be in different AZs.
+
+# CIDR block for the VPC.
+vpc_cidr = "10.10.0.0/16"
+
+# Uncomment to deploy into an existing VPC instead of creating a new one.
+# existing_vpc_id            = "vpc-xxxxxxxxxxxxxxxxx"
+# existing_subnet_id_primary = "subnet-xxxxxxxxxxxxxxxxx"
+# existing_subnet_id_backup  = "subnet-xxxxxxxxxxxxxxxxx"
+
+# Force AZ placement order [primary, backup] (only used when creating a new VPC).
+# availability_zone_overrides = ["us-east-1a", "us-east-1b"]
+
+# ── Compute ───────────────────────────────────────────────────────────────────
+
+# By default, the latest N3uron AMI from the AWS Marketplace is used automatically.
+# Do NOT set ami_id unless you need to deploy a specific N3uron AMI version.
+# ami_id = "ami-xxxxxxxxxxxxxxxxx"
+# Must be a Graviton instance (e.g. t4g, m7g, m8g).
+instance_type = "m8g.medium"
+
+# AWS EC2 Key Pair name for SSH access. Leave commented to use EC2 Instance Connect only.
+# key_name = "my-keypair"
+
+# ── Network Access ────────────────────────────────────────────────────────────
+
+# CIDR blocks allowed to reach SSH (22/TCP). Leave commented to use EC2 Instance Connect only.
+# ssh_cidr_blocks = ["203.0.113.0/24"]
+
+# CIDR blocks allowed to reach the N3uron WebUI (8003/TCP).
+# For production, restrict access to trusted IPs instead of 0.0.0.0/0:
+#   webui_cidr_blocks = ["203.0.113.10/32", "198.51.100.0/24"]
+webui_cidr_blocks = ["0.0.0.0/0"]
+
+# CIDR blocks allowed to reach N3uron Links (3001/TCP).
+links_cidr_blocks = ["0.0.0.0/0"]
+
+# Additional TCP ingress rules for the security group. Use this to open custom
+# ports needed by N3uron modules (e.g. REST API, MQTT, OPC UA, Sparkplug).
+# Each rule requires a description, a single TCP port, and a list of CIDR blocks.
+# extra_ingress_rules = [
+#   { description = "REST API",  port = 3443, cidr_blocks = ["0.0.0.0/0"] },
+#   { description = "OPC UA",    port = 4840, cidr_blocks = ["10.0.0.0/8"] },
+#   { description = "WebVision", port = 8444, cidr_blocks = ["0.0.0.0/0"] },
+# ]
+
+# ── Storage ───────────────────────────────────────────────────────────────────
+
+# Size of the root EBS volume in GB (minimum 8).
+root_volume_size_gb = 40
+
+# Encrypt the root volume at rest (default: true).
+root_volume_encrypted = true
+
+# ── Tags ──────────────────────────────────────────────────────────────────────
+# Applied to all AWS resources. Useful for cost allocation and filtering.
+
+tags = {
+  Project = "n3uron-template"
+  Env     = "dev"
+}
+
+# ── MongoDB Atlas ─────────────────────────────────────────────────────────────
+
+########################
+# Atlas Authentication
+########################
+# Create a Service Account in Atlas → Organization → Access Manager → Service Accounts.
+
+# Service account client ID.
+atlas_client_id = "your-service-account-client-id"
+
+# Service account client secret.
+atlas_client_secret = "your-service-account-client-secret"
+
+# Atlas project ID where the cluster will be created.
+atlas_project_id = "your-atlas-project-id"
+
+########################
+# Atlas Cluster
+########################
+
+# Cluster name. Default: "<name_prefix>-cluster".
+# atlas_cluster_name = "my-cluster"
+
+# Instance size: M0 (free), M10, M20, M30, etc.
+atlas_instance_size = "M0"
+
+# Atlas region for the cluster.
+# Default: aws_region converted to Atlas format.
+# Override only if you need the cluster in a different region than the EC2
+# instance. Examples:
+#   "us-east-1"      → "US_EAST_1"
+#   "eu-west-1"      → "EU_WEST_1"
+#   "ap-southeast-1" → "AP_SOUTHEAST_1"
+# atlas_region_name = "US_EAST_1"
+
+########################
+# Atlas Database
+########################
+
+# Database user created for the N3uron Historian.
+atlas_db_username = "n3uron"
+
+# Password for the database user.
+atlas_db_password = "change-me-to-a-strong-password"
+
+########################
+# Atlas VPC Peering
+########################
+
+# Enable VPC peering to connect the Atlas cluster to the AWS VPC over a private
+# network link instead of the public internet. Requires M10+ tier.
+# atlas_vpc_peering = false
+
+# Atlas container CIDR (must not overlap vpc_cidr).
+# atlas_vpc_cidr = "172.16.0.0/21"
