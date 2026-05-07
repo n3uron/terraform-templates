@@ -1,9 +1,18 @@
 # N3uron AWS Templates
 
-Infrastructure-as-Code templates for deploying [N3uron](https://n3uron.com) on AWS
-using [OpenTofu](https://opentofu.org) (or Terraform). Each template provisions an
-EC2 instance running the N3uron IIoT platform, with optional managed database
-integration (MongoDB Atlas or Tiger Data).
+Deploy [N3uron](https://n3uron.com) on AWS in minutes with
+[OpenTofu](https://opentofu.org) (or [Terraform](https://www.terraform.io/)).
+Six ready-to-use templates cover standalone and high-availability setups, with
+optional managed database integration (MongoDB Atlas or Tiger Data).
+
+## What is N3uron?
+
+[N3uron](https://n3uron.com) is an Industrial Edge Platform for DataOps that streamlines the flow of
+data between industrial devices and business applications, either on-premise or
+in the cloud. N3uron provides an out-of-the-box solution for data
+standardization, normalization and contextualization, seamless integration with
+industrial and IT systems, efficient information management, and unparalleled
+scalability and security.
 
 ## Templates overview
 
@@ -30,9 +39,10 @@ how to set up these prerequisites — follow the linked documentation for each o
 
 - **AWS account** with permissions to create VPCs, subnets, EC2 instances,
   Elastic IPs, security groups, IAM roles, and CloudWatch alarms.
-- **IAM access key and secret key**
-  ([Create access keys](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html)),
-  **or** an **AWS CLI** profile already configured
+- **IAM access key and secret key**. Create them in the AWS Console → IAM →
+  IAM Users → *select your user* → Security credentials → Create access key
+  ([Documentation](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html)),
+  **or** use an **AWS CLI** profile already configured
   ([Install guide](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) ·
   [Configure a profile](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html)).
 - **OpenTofu** (>= 1.6.0) installed
@@ -61,6 +71,10 @@ how to set up these prerequisites — follow the linked documentation for each o
 - **Client credentials** (access key and secret key). Create them in the Tiger Data
   console → Project settings
   ([Documentation](https://docs.timescale.com/use-timescale/latest/security/client-credentials/)).
+
+> **Important:** Make sure billing is enabled in your Tiger Data project before
+> deploying, otherwise the deployment will fail.
+> Configure it in **Project settings → Billing**.
 
 ## Quick start
 
