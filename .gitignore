@@ -39,5 +39,12 @@ override.tf.json
 # OS/editor noise
 .DS_Store
 Thumbs.db
-.claude/
 .vscode/settings.json
+
+# Claude Code (local agent workspace; not shared)
+.claude/
+CLAUDE.md
+AGENTS.md
+docs/plans/
+docs/brainstorms/
+docs/solutions/
